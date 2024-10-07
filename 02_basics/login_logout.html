@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register, Login & Logout</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  width: 300px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.input-field {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+.hidden {
+  display: none;
+}
+
+#error-message {
+  color: red;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#welcome-screen {
+  text-align: center;
+}
+
+#welcome-screen p {
+  margin-bottom: 20px;
+}
+
+#welcome-screen button {
+  background-color: #dc3545;
+}
+
+#welcome-screen button:hover {
+  background-color: #c82333;
+}
+
+</style>
+<body>
+  <div class="container">
+
+    <!-- Registration Form -->
+    <div id="register-form" class="form">
+      <h2>Register</h2>
+      <form id="registerForm">
+        <div class="input-field">
+          <label for="register-username">Username:</label>
+          <input type="text" id="register-username" required>
+        </div>
+        <div class="input-field">
+          <label for="register-password">Password:</label>
+          <input type="password" id="register-password" required>
+        </div>
+        <div class="error-message" id="register-error-message"></div>
+        <button type="submit">Register</button>
+      </form>
+      <p>Already have an account? <a href="#" id="switch-to-login">Login here</a></p>
+    </div>
+
+    <!-- Login Form -->
+    <div id="login-form" class="form hidden">
+      <h2>Login</h2>
+      <form id="loginForm">
+        <div class="input-field">
+          <label for="username">Username:</label>
+          <input type="text" id="username" required>
+        </div>
+        <div class="input-field">
+          <label for="password">Password:</label>
+          <input type="password" id="password" required>
+        </div>
+        <div class="error-message" id="login-error-message"></div>
+        <button type="submit">Login</button>
+      </form>
+      <p>Don't have an account? <a href="#" id="switch-to-register">Register here</a></p>
+    </div>
+
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="hidden">
+      <h2>Welcome!</h2>
+      <p id="welcome-message"></p>
+      <button id="logout-btn">Logout</button>
+    </div>
+
+  </div>
+
+  <script>
+    // DOM Elements
+const registerForm = document.getElementById('registerForm');
+const loginForm = document.getElementById('loginForm');
+const registerScreen = document.getElementById('register-form');
+const loginScreen = document.getElementById('login-form');
+const welcomeScreen = document.getElementById('welcome-screen');
+const errorMessage = document.getElementById('login-error-message');
+const registerErrorMessage = document.getElementById('register-error-message');
+const welcomeMessage = document.getElementById('welcome-message');
+const logoutButton = document.getElementById('logout-btn');
+
+// Switching between Register and Login
+document.getElementById('switch-to-login').addEventListener('click', function () {
+  registerScreen.classList.add('hidden');
+  loginScreen.classList.remove('hidden');
+});
+document.getElementById('switch-to-register').addEventListener('click', function () {
+  loginScreen.classList.add('hidden');
+  registerScreen.classList.remove('hidden');
+});
+
+// Function to show error message
+function showError(element, message) {
+  element.textContent = message;
+}
+
+// Function to hide error message
+function hideError(element) {
+  element.textContent = '';
+}
+
+// Event listener for registration form submission
+registerForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const username = document.getElementById('register-username').value;
+  const password = document.getElementById('register-password').value;
+
+  if (!username || !password) {
+    showError(registerErrorMessage, 'Username and password are required');
+    return;
+  }
+
+  // Save the registered user to localStorage
+  localStorage.setItem('registeredUser', JSON.stringify({ username, password }));
+
+  alert('Registration successful! You can now log in.');
+  
+  // Switch to login screen after registration
+  registerScreen.classList.add('hidden');
+  loginScreen.classList.remove('hidden');
+  hideError(registerErrorMessage);
+});
+
+// Event listener for login form submission
+loginForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+
+  // Retrieve registered user from localStorage
+  const registeredUser = JSON.parse(localStorage.getItem('registeredUser'));
+
+  if (!registeredUser || registeredUser.username !== username || registeredUser.password !== password) {
+    showError(errorMessage, 'Invalid username or password');
+    return;
+  }
+
+  // Hide login form and show welcome screen
+  loginScreen.classList.add('hidden');
+  welcomeScreen.classList.remove('hidden');
+  welcomeMessage.textContent = `Hello, ${username}!`;
+  hideError(errorMessage);
+});
+
+// Event listener for logout button
+logoutButton.addEventListener('click', function () {
+  // Hide welcome screen and show login form
+  welcomeScreen.classList.add('hidden');
+  loginScreen.classList.remove('hidden');
+  loginForm.reset();
+});
+
+  </script>
+</body>
+</html>
