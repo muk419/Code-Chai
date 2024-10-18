@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital clock</title>
+</head>
+<body>
+    <span id="digitalclock"></span>
+    <Script>
+        let valueget=document.querySelector("#digitalclock")
+
+        setInterval(()=>{
+            let dateData=new Date();
+          letfinaltime=dateData.toLocaleTimeString()
+          valueget.innerHTML=letfinaltime
+        },1000)
+    </Script>
+</body>
+</html>

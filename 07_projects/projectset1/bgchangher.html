@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bgchanger</title>
+</head>
+
+<body>
+    <span class="color" >gray</span>
+    <span class="color" >blue</span>
+    <span class="color">yellow</span>
+    <span class="color">green</span>
+
+    <script>
+        let colordata = document.querySelectorAll('.color');
+        colordata.forEach((ele,index) => {
+            ele.addEventListener('click', (e) => {
+                let bodystore = document.getElementsByTagName("body")[0];
+                bodystore.style.backgroundColor = ele.textContent.trim();
+            });
+        });
+    </script>
+</body>
+
+</html>

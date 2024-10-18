@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Detect Element Reaching Top of Screen</title>
+    <style>
+        body {
+            height: 2000px;
+            margin: 0;
+            padding: 0;
+        }
+        .target {
+            margin-top: 800px;
+            height: 100px;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="target" id="target">I am the target</div>
+
+    <script>
+        const target = document.getElementById('target');
+
+        window.addEventListener('scroll', function() {
+            const scrollY = window.scrollY;  // How far the document has been scrolled
+            const targetTop = target.offsetTop;  // The element's position relative to the document
+            console.log(scrollY,targetTop)
+            
+            if (scrollY >= targetTop) {
+                target.innerHTML="hi this is my value"
+            }
+        });
+    </script>
+
+</body>
+</html>
+

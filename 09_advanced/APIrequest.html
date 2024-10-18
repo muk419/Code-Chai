@@ -1,0 +1,73 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>api request</title>
+</head>
+<body>
+
+    Name:<h1 id="name"></h1>
+    photo:<img id="photo"/>
+    followers:<p id="followers"></p>
+    <button id="click">click</button>
+    <script>
+
+      
+        
+
+     document.querySelector("#click").addEventListener("click",()=>{
+        let name=document.querySelector("#name");
+        let photo=document.querySelector("#photo");
+        let followers=document.querySelector("#followers")
+        const apirequest='https://api.github.com/users/hiteshchoudhary'
+        const xhr=new XMLHttpRequest();
+        xhr.open('GET',apirequest)
+        xhr.onreadystatechange=function(){
+            console.log(xhr.readyState)
+            if(xhr.readyState==4){
+
+                const data=JSON.parse(this.responseText)
+                name.innerHTML=data?.twitter_username
+                followers.innerHTML=data?.followers
+                console.log(data)
+        
+            }
+        }
+        console.log(xhr.readyState)
+        xhr.send()
+      
+     })
+    </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="background-color: #212121;">
+    0	UNSENT	Client has been created. open() not called yet.
+1	OPENED	open() has been called.
+2	HEADERS_RECEIVED	send() has been called, and headers and status are available.
+3	LOADING	Downloading; responseText holds partial data.
+4	DONE	The operation is complete.
+</body>
+<script>
+    const requestUrl = 'https://api.github.com/users/hiteshchoudhary'
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', requestUrl)
+    xhr.onreadystatechange = function(){
+        console.log(xhr.readyState);
+        if (xhr.readyState === 4) {
+            const data = JSON.parse(this.responseText)
+            console.log(typeof data);
+            console.log(data.followers);
+        }
+    }
+    xhr.send();
+</script>
+</html>

@@ -1,0 +1,163 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>event methods</title>
+</head>
+<body>
+    <button id="myButton">Click Me!</button>
+
+<script>
+    const myButton = document.getElementById('myButton');
+
+    myButton.addEventListener('click', function(event) {
+        console.log(event.type); // Output: "click"
+    });
+
+
+
+    // myButton.addEventListener('click', function(event) {
+    //     console.log(event.timeStamp); // Output: Time when the event occurred
+    // });
+
+    // myForm.addEventListener('submit', function(event) {
+    //     event.preventDefault(); // Prevents form submission
+    //     console.log('Form submission prevented:', event.defaultPrevented); // Output: true
+    // });
+
+
+    // document.addEventListener('click', function(event) {
+    //     console.log(event.target.id); // Output: "myButton" when the button is clicked
+    // });
+
+
+//     5. toElement / srcElement
+// Definition: These properties are primarily used in older versions of Internet Explorer to reference the element the event is related to (similar to target).
+// Example: These properties have been replaced by the standard event.target.
+
+
+// container.addEventListener('click', function(event) {
+//         console.log('Current Target:', event.currentTarget.id); // Output: "container"
+//         console.log('Target:', event.target.id); // Output: "myButton" when the button is clicked
+//     });
+
+
+
+// Definition: These properties return the X and Y coordinates of the mouse pointer, relative to the viewport (the visible area of the webpage).
+// document.addEventListener('click', function(event) {
+//         console.log('Mouse X:', event.clientX); // X-coordinate of the click within the viewport
+//         console.log('Mouse Y:', event.clientY); // Y-coordinate of the click within the viewport
+//     });
+
+
+// Definition: These properties return the X and Y coordinates of the mouse pointer, relative to the entire screen.
+// Example: Useful when you need to know the mouse position on the screen, not just within the browser window.
+
+document.addEventListener('click', function(event) {
+        console.log('Screen X:', event.screenX); // X-coordinate of the click on the screen
+        console.log('Screen Y:', event.screenY); // Y-coordinate of the click on the screen
+    });
+</script>
+
+</body>
+</html> -->
+<!-- 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScreenX and ScreenY Example</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Click Anywhere to Change Background Color</h1>
+
+    <script>
+        document.body.addEventListener('click', function(event) {
+            const screenX = event.screenX; // X-coordinate of the click on the screen
+            const screenY = event.screenY; // Y-coordinate of the click on the screen
+console.log(window.screen.width     )
+            // Normalize screenX and screenY to values between 0 and 255 for RGB
+            const red = Math.floor((screenX / window.screen.width) * 255);
+            const green = Math.floor((screenY / window.screen.height) * 255);
+            const blue = Math.floor(((screenX + screenY) / (window.screen.width + window.screen.height)) * 255);
+
+            // Change the background color of the body using RGB values
+            document.body.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+        });
+    </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click to Change Point Color</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            font-family: Arial, sans-serif;
+        }
+        .dot {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <h1>Click Anywhere to Change the Point's Color</h1>
+
+    <script>
+        document.body.addEventListener('click', function(event) {
+            // Remove any existing dot
+            const existingDot = document.querySelector('.dot');
+            if (existingDot) {
+                existingDot.remove();
+            }
+
+            // Create a new dot at the click position
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+
+            // Set the dot's position based on where the user clicked
+            dot.style.left = `${event.clientX - 10}px`; // -10 to center the dot horizontally
+            dot.style.top = `${event.clientY - 10}px`;  // -10 to center the dot vertically
+
+            // Random color generation for the dot
+            const red = Math.floor(Math.random() * 256);
+            const green = Math.floor(Math.random() * 256);
+            const blue = Math.floor(Math.random() * 256);
+            dot.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+
+            // Append the dot to the body
+            document.body.appendChild(dot);
+        });
+    </script>
+</body>
+</html>
+
