@@ -1,0 +1,1 @@
+jaise hi maine new keyword use kiya ek new empty object create hota hai {} jisko hum new instance bolte hai jissese value overide nahi hoti
