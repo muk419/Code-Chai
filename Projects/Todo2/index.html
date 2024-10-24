@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <style>
+        .errormg {
+            border: 1px solid red;
+            color: red;
+        }
+
+        input {
+            outline: none;
+        }
+
+        .error_message {
+            color: red;
+        }
+
+        .search_name {
+            padding: 20px 30px;
+
+        }
+
+        .search_name input {
+            padding: 10px 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="todo_container">
+        <div class="todoForm">
+            <div class="search_name">
+                search here:<input id="search_box" oninput="searchfunction()" placeholder="search here" />
+            </div>
+
+            <form action="" id="todoForm" onsubmit="AddTask(event)">
+                <input type="text" id="nameValue" oninput="nameValueValid()" placeholder="Enter Your Full Name" />
+                <p class="error_message" id="errorNameValue"></p>
+                <input type="email" id="mailValue" oninput="emailValueValid()" placeholder="Enter Your mail id" />
+                <p class="error_message" id="errorMail"></p>
+                <input type="text" id="phoneValue" oninput="phoneValueValid()" placeholder="Phone Number" />
+                <p class="error_message" id="errorPhoneValue"></p>
+                <button id="submitButton">Add Task</button>
+            </form>
+            <div id="data_container"></div>
+        </div>
+    </div>
+    <script>
+        let isUpdating = false;
+        let updatingId = null;
+        let markedboolean = false;
+        let AddTask = (event) => {
+            event.preventDefault();
+            const nameValuereturn = nameValueValid()
+            const emialretun = emailValueValid()
+            const phoneValuereturn = phoneValueValid()
+
+            if (nameValuereturn && emialretun && phoneValuereturn) {
+                let nameValue = document.querySelector("#nameValue")
+                let mailValue = document.querySelector("#mailValue")
+                let phoneValue = document.querySelector("#phoneValue")
+
+
+                let setlocat = JSON.parse(localStorage.getItem("userData")) || [];
+                if (isUpdating) {
+                    let taskIndex = setlocat.findIndex(task => task.id === updatingId);
+                    console.log(taskIndex, "taskindex value")
+                    if (taskIndex !== -1) {
+                        setlocat[taskIndex].name = nameValue.value;
+                        setlocat[taskIndex].email = mailValue.value;
+                        setlocat[taskIndex].phone = phoneValue.value;
+                    }
+                    isUpdating = false;
+                    updatingId = null;
+                    document.getElementById('submitButton').textContent = "Add Task";
+                } else {
+                    let genrateID = Math.floor(Math.random() * 100 + 1);
+                    let task = {
+                        id: genrateID,
+                        name: nameValue.value,
+                        email: mailValue.value,
+                        phone: phoneValue.value
+                    };
+                    console.log(task, "object value")
+                    setlocat.push(task)
+
+                }
+                localStorage.setItem("userData", JSON.stringify(setlocat));
+                displayuserdata()
+                nameValue.value = "";
+                mailValue.value = "";
+                phoneValue.value = "";
+
+            } else {
+                alert("validation faild")
+            }
+        }
+
+        function displayuserdata() {
+            let detailcontainer = document.querySelector("#data_container")
+            let setlocat = JSON.parse(localStorage.getItem("userData")) || [];
+            detailcontainer.innerHTML = "";
+            setlocat.map((ele) => {
+                detailcontainer.innerHTML += `<div>
+                    <p class="nameid">${ele.name}</p>
+                    <p class="emailid">${ele.email}</p>
+                    <p class="phoneid">${ele.phone}</p>
+                    <button onclick="deleteTask(${ele.id})">Delete</button>
+                    <button onclick="updatedata(${ele.id})">Update</button>
+                    <button class="marked" onclick="marked(${ele.id})" marked()>Marked</button>
+                    </div>`
+            })
+
+        }
+        const nameValueValid = () => {
+            const nameRegex = /^[a-zA-Z ]{2,}$/
+            if (nameRegex.test(nameValue.value)) {
+                nameValue.classList.remove("errormg");
+                errorNameValue.textContent = "";
+                return true
+            }
+            else {
+                nameValue.classList.add("errormg");
+                errorNameValue.textContent = "Please enter a valid name (minimum 2 characters).";
+                return false
+            }
+        }
+
+        const emailValueValid = () => {
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (emailRegex.test(mailValue.value)) {
+                mailValue.classList.remove("errormg");
+                errorMail.textContent = "";
+                return true
+            }
+            else {
+                mailValue.classList.add("errormg");
+                errorMail.textContent = "Please enter a valid email address.";
+                return false
+            }
+        }
+        const phoneValueValid = () => {
+            const phoneRegex = /^(\+?\d{1,3}[-.\s]?)?(\d{10})$/;
+            if (phoneRegex.test(phoneValue.value)) {
+                phoneValue.classList.remove("errormg")
+                errorPhoneValue.textContent = "";
+                return true
+                    ;
+            } else {
+                phoneValue.classList.add("errormg");
+                errorPhoneValue.textContent = "Please enter a valid 10-digit phone number.";
+                return false
+            }
+        }
+
+        function deleteTask(id) {
+            let detailcontainer = document.querySelector("#data_container")
+            let setlocat = JSON.parse(localStorage.getItem("userData")) || [];
+            let getvalue = setlocat.filter((ele) => ele.id !== id)
+            console.log(getvalue, 'filter thus value')
+
+            localStorage.setItem("userData", JSON.stringify(getvalue));
+            displayuserdata()
+        }
+
+        const updatedata = (id) => {
+            let setlocat = JSON.parse(localStorage.getItem("userData")) || [];
+            console.log(setlocat, "fiind value")
+            let task = setlocat.find((ele) => ele.id === id)
+            console.log(task, "after find")
+            document.getElementById('submitButton').textContent = "Update Task";
+            if (task) {
+                document.querySelector("#nameValue").value = task.name;
+                document.querySelector("#mailValue").value = task.email;
+                document.querySelector("#phoneValue").value = task.phone;
+
+                isUpdating = true;
+                updatingId = id;
+                document.getElementById('submitButton').textContent = "Update Task";
+            }
+        }
+
+        const marked = (id) => {
+            let setlocat = JSON.parse(localStorage.getItem("userData")) || [];
+            let markreturnvalue = setlocat.findIndex((ele) => ele.id === id)
+            console.log(markreturnvalue)
+            if (markreturnvalue !== -1) {
+
+                markedboolean = !markedboolean``
+                console.log(markedboolean, "this is boolen value")
+                const unmarked = document.querySelectorAll('.marked')
+                const nameElements = document.querySelectorAll('.nameid');
+                if (markedboolean) {
+
+
+                    unmarked[markreturnvalue].innerHTML = "unmarked"
+
+                    nameElements[markreturnvalue].style.color = "red";
+                } else {
+
+                    unmarked[markreturnvalue].innerHTML = "marked"
+                    nameElements[markreturnvalue].style.color = "black";
+                }
+
+            }
+        }
+
+        const unmarked = document.querySelectorAll('.marked')
+        const nameElements = document.querySelectorAll('.nameid');
+
+
+        let searchfunction = () => {
+            let setlocat = JSON.parse(localStorage.getItem("userData")) || [];
+            setlocat.filter((ele) => {
+                console.log(ele.name)
+            })
+            let searchValue = document.querySelector('#search_box').value;
+
+        }
+        window.onload = displayuserdata
+    </script>
+</body>
+
+</html>

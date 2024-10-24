@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO List</title>
+    <style>
+        .completed {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+    <form action="" onsubmit="addOrUpdateTask(event)">
+        <input type="text" id="input_type">
+        <input type="submit" value="Add Task" id="submitButton"/>
+    </form>
+    <div id="taskList"></div>
+
+<script>
+let currentTaskId = null;
+
+let addOrUpdateTask = (e) => {
+    e.preventDefault();
+    
+    let inputValue = document.querySelector("#input_type").value;
+
+    if (inputValue.trim() === "") {
+        alert("Please enter a valid input");
+        return;
+    }
+
+    let taskarray = JSON.parse(localStorage.getItem("tasks")) || [];
+    if (currentTaskId === null) {
+        let randomValue = Math.floor(Math.random() * 100 + 1);
+        const newTask = {
+            id: randomValue,
+            task: inputValue,
+            completed: false
+        };
+        taskarray.push(newTask);
+    } else {
+        taskarray = taskarray.map(task => {
+            if (task.id === currentTaskId) {
+                task.task = inputValue; 
+            }
+            return task;
+        });
+        currentTaskId = null;
+        document.getElementById("submitButton").value = "Add Task";
+    }
+    localStorage.setItem("tasks", JSON.stringify(taskarray));
+    document.querySelector("#input_type").value = ""; 
+    detaillist();
+}
+
+function detaillist() {
+    let taskarray = JSON.parse(localStorage.getItem("tasks")) || [];
+    let taskList = document.getElementById("taskList");
+    taskList.innerHTML = ""; 
+    taskarray.map((ele) => {
+        taskList.innerHTML += `
+            <div class="task-item">
+                <p class="list ${ele.completed ? 'completed' : ''}" id="list">${ele.task}</p>
+                <button onclick="deleteTask(${ele.id},event)">Delete</button>
+                <button onclick="editTask(${ele.id}, '${ele.task}')">Update</button>
+                <button class="done" onclick="donetask(${ele.id}, event)">
+                    ${ele.completed ? 'Unmark' : 'Mark as Done'}
+                </button>
+            </div>`;
+    });
+}
+
+function deleteTask(id) {
+    let taskarray = JSON.parse(localStorage.getItem("tasks")) || [];
+    taskarray = taskarray.filter((ele) => ele.id !== id);
+    localStorage.setItem("tasks", JSON.stringify(taskarray));
+    detaillist();
+}
+
+function editTask(id, task) {
+    currentTaskId = id;
+    document.querySelector("#input_type").value = task;
+    document.getElementById("submitButton").value = "Update Task";
+}
+
+function donetask(taskid, event) {
+    let taskarray = JSON.parse(localStorage.getItem("tasks")) || [];
+    taskarray = taskarray.map(task => {
+        if (task.id === taskid) {
+            task.completed = !task.completed; // Toggle the completed status
+        }
+        return task;
+    });
+
+    localStorage.setItem("tasks", JSON.stringify(taskarray));
+    detaillist(); // Re-render the list to reflect changes
+}
+
+window.onload = detaillist;
+</script>
+</body>
+</html>
