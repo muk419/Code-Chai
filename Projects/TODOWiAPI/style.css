@@ -1,0 +1,47 @@
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+.container {
+    width: 600px;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+.form {
+    margin-bottom: 20px;
+}
+
+input, textarea, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.posts h2 {
+    margin-top: 0;
+}
+
+.post {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.post button {
+    margin-right: 10px;
+}

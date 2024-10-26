@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD App</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>CRUD App with Dummy API</h1>
+        
+        <div class="form">
+            <input type="text" id="title" placeholder="Title">
+            <textarea id="body" placeholder="Content"></textarea>
+            <button onclick="createPost()" id="createposts">Create Post</button>
+            <button onclick="updatePost()" style="display: none;" id="updateButton">Update Post</button>
+        </div>
+        
+        <div class="posts">
+            <h2>Posts</h2>
+            <div id="postContainer"></div>
+        </div>
+    </div>
+    
+    <script src="./script.js"></script>
+</body>
+</html>
