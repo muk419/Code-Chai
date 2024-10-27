@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>E-Commerce Website</title>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#home">Home</a>
+        <a href="#login">Login</a>
+        <a href="#logout">Logout</a>
+        <div class="dropdown">
+          <a href="#products">Products</a>
+          <div class="dropdown-content">
+            <a href="#shirt">Shirt</a>
+            <a href="#tshirt">T-shirt</a>
+          </div>
+        </div>
+      </nav>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form>
+          <div class="input-group">
+            <label for="username">Username</label>
+            <input type="text" id="loginusername" name="username" oninput="loginUsername()" onblur="resetUsernameError()">
+            <span class="error_message"></span>
+          </div>
+          <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" id="loginpassword" name="password" oninput="loginPassword()"  onblur="resetPasswordError()">
+            <span class="error_message"></span>
+          </div>
+          <button type="submit" id="loginButton" class="btn">Login</button>
+          <span>if you don't have account <a href="register.html">Register</a></span>
+          
+        </form>
+      </div>
+   <script src="./script.js"></script> 
+</body>
+</html>
