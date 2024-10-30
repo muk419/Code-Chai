@@ -1,84 +1,100 @@
-// RegisterValidation
-let loginButton=document.querySelector("#loginButton")
-let loginusername=document.querySelector("#loginusername")
-let loginpassword=document.querySelector("#loginpassword")
-let errormessage=document.querySelectorAll(".error_message")
+const parenContainer=document.querySelector('#main_container')
+const sortmethod=document.querySelector("#sortmethod1")
+const itemsPerPage = 5;
+let currentPage = 1;
 
+function paginate(array, page_size, page_number) {
+    // human-readable page numbers usually start with 1, so we reduce 1 in the first argument
+    return array.slice((page_number - 1) * page_size, page_number * page_size);
+  }
+  
+  console.log(paginate([1, 2, 3, 4, 5, 6], itemsPerPage, currentPage));
+  console.log(paginate([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 4, 1));
+async function products(getvalue){
+    console.log(getvalue,"this is get value")
+    try{
+        parenContainer.innerHTML ='';
+        const urlData=getvalue?`https://fakestoreapi.com/products/category/${getvalue}`:"https://fakestoreapi.com/products"
+        console.log(urlData,"this is geting from URL path")
+        const API_Product=await fetch(urlData)
+        const  storeProduct=await API_Product.json()
+        console.log( storeProduct)
 
+const totalPage=Math.ceil(storeProduct.length/itemsPerPage)
 
-loginButton.addEventListener("click",(event)=>{
-     event.preventDefault()
-     let isUsernameValid=loginUsername()
-     let isPasswordValid=loginPassword()
-   
-      if(isUsernameValid && isPasswordValid){
-         let getuserName=JSON.parse(localStorage.getItem("userData")) || [];
-         
-        getuserName.map((ele)=>{
-            console.log(typeof ele.username)
-            console.log(typeof loginusername)
-       if(ele.username==loginusername && ele.password==loginpassword){
-        //  alert("you login successfully")
-       }
-       else{
-        // alert("username and password not matched")
-       }
+paginate(storeProduct,)
+        storeProduct.map((ele)=>{
+            
+            let warberofCard=document.createElement("div") 
+               warberofCard.classList="card_container"
+    
+            warberofCard.innerHTML+=`<div class="card">
+        <img src=${ele.image} alt="White Gold Plated Princess" class="product-image">
+        <div class="card-content">
+            <h3 class="product-title">${ele.title}</h3>
+            <p class="product-category">${ele.category}</p>
+            <p class="product-description">
+               ${ele.description}
+            </p>
+            <p class="product-price">${ele.price}</p>
+            <div class="product-rating">
+                <span>Rating: ${ele?.rating?.rate}</span>
+                <span>${ele?.rating?.count} reviews</span>  
+            </div>
+            <button onclick="navigateToProduct(${ele.id})" class="buy-now">Buy Now</button>
+        </div>
+    </div>`
+
+    parenContainer.append(warberofCard)
         })
-         
 
-      }
+    }catch(error){
+      console.log(error)
+    }
+}
+function navigateToProduct(productId){
+    window.location.href = `product.html?id=${productId}`
+}
+products();
+
+async function  categoryValue(){
+    try{
+        const API_categories= await fetch("https://fakestoreapi.com/products/categories")
+        const storeCategories=await API_categories.json()
+       console.log(storeCategories)
+        storeCategories.map((ele)=>{
+            let createoption=document.createElement("option")
+            createoption.value=ele
+            createoption.textContent=ele
+           optionvalue.append(createoption)
+         
+        })
+      
+    }catch(erorr){
+        console.log(erorr)  
+    }
+}
+categoryValue()
+
+const optionvalue=document.querySelector('#categoryDropdown')
+optionvalue.addEventListener("change",(event)=>{
+
+ const categorypass= event.target.value
+ products(categorypass)
+ console.log(categorypass)
 })
 
 
-let loginUsername=()=>{
-const usernameRegex = /^[a-zA-Z][a-zA-Z0-9_.]{2,14}$/;
-if(usernameRegex.test(loginusername.value)){
-    loginusername.style.borderColor ="unset"
-    errormessage[0].innerHTML="";
-    console.log("this is true value")
-    return true;
-}
-else{
-    loginusername.style.borderColor ="red";
-    errormessage[0].innerHTML="Username is Invalid";
-    console.log("this is false value")
-    return false; 
-}
-}
 
 
-function loginPassword(){
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-if(passwordRegex.test(loginpassword.value)){
-    loginpassword.style.borderColor ="unset";
-    errormessage[1].innerHTML="";
-    return true;
-}
-else{
-    loginpassword.style.borderColor ="red";
-    errormessage[1].innerHTML="Password is Invalid";
-
-    return false;
-}
-}
 
 
-function resetUsernameError(){
-    if (loginusername.value === "") {
-        loginusername.style.borderColor = "unset"; 
-        console.log(errormessage[0])
-        errormessage[0].innerHTML="";
-    } else {
-        loginUsername();
-    }
-}
 
-function resetPasswordError(){
-    if (loginpassword.value === "") {
-        loginpassword.style.borderColor = "unset";
-        errormessage[1].innerHTML="";
-    } else {
-        loginPassword(); 
-    }
-}
+
+
+
+
+
+
+
 

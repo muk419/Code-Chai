@@ -13,12 +13,25 @@
         <a href="logout.html">Logout</a>  
         <div class="dropdown">
           <a href="products.html">Products</a> 
-          <div class="dropdown-content">
-            <a href="shirt.html">Shirt</a>    
-            <a href="tshirt.html">T-shirt</a>
-          </div>
+          <div class="dropdown-content" id="dropdwon"> 
+            <select id="categoryDropdown">
+              <option value="select Value">Select option</option>
+            </select>
+        </div>
+        
         </div>
       </nav>
+      <div id="main_container"></div>
+      <button id="sortmethod">Sort product</button>
+      <div class="pagination-container">
+        <button class="pagination-button" id="prevPage" onclick="changePage('prev')">Previous</button>
+        <div class="page-numbers" id="pageNumbers">
+            <!-- Page numbers will be dynamically added here -->
+        </div>
+        <button class="pagination-button" id="nextPage" onclick="changePage('next')">Next</button>
+    </div>
+    
+
    <script src="./script.js"></script> 
 </body>
 </html>
